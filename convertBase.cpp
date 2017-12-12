@@ -1,82 +1,50 @@
 #include <iostream>
 #include <vector>
 
-struct Base4{
-	Base4() = default;
-	void base10ToNewBase(unsigned number, unsigned base);
-	bool isMultipleOf4(unsigned number);
-	bool multipleCalled;
-};
+void base10ToNewBase(unsigned number, unsigned base);
+char getLetter(unsigned n);
 
 int main(int argc, char** argv){
 	unsigned input;
 	std::cout << "Enter a number: ";
 	std::cin >> input;
-	Base4 b4;
-	b4.base10ToNewBase(input, 4);
+	base10ToNewBase(input, 4);
 	std::cout << std::endl;
 	return 0;
 }
 
-void Base4::base10ToNewBase(unsigned number, unsigned base) {
-	int basePower = 0;
-	unsigned powerValue = 1;
-	for (unsigned i = 0; i < 16; i++) { //goes up to the 15th power
-		basePower = i;
-		powerValue = 1;
-		std::cout << "Base Power: " << basePower;
-		while (basePower > 0) {
-			powerValue *= base; // 1 4 16 64 256 ... 1,073,741,824
-			basePower--;
-		}
-		std::cout << " Power Value: " << powerValue << "\n";
-		if (number <= powerValue) {
-			basePower = i;
-			break;
-		}
+void base10ToNewBase(unsigned number, unsigned base){
+	//Formula used: z = d*q + r
+	//z = dividend, d = divisor, q = quotient, r = remainder
+	// example: 16/4 -> z = 16, d = 4, q = 4, r = 0 -> returns A
+	// 4/4 -> z = 4, d = 4, q = 1, r = 0 -> returns A
+	// 1/4 -> z = 1, d = 4, q = 0, r = 1 -> returns B
+	unsigned quotient = number/base;
+	unsigned remainder = number%base;
+	std::vector<char> output;
+	char c;
+	c = getLetter(remainder);
+	output.push_back(c);
+	while(quotient > 0){
+			remainder = quotient%base;
+			c = getLetter(remainder);
+			output.push_back(c);
+			quotient /= base;
 	}
-
-	if (number > powerValue) std::cout << "Number is too large\n";
-	else {
-		int baseSize = basePower;
-		std::cout << "Top Base Power: " << baseSize << "\n";
-		std::vector<int> numbers;
-		
-		int n;
-		for (int i = 0; i < baseSize; i++){
-			std::cout << number << " ";
-			n = number%4;
-			if(isMultipleOf4(number) && !multipleCalled){
-				n = 1;
-				multipleCalled = true;
-			}
-			numbers.push_back(n);
-			if(number == 4) break;
-			else number /= 4;
-		}
-
-		std::cout << "Vector Size: " << numbers.size() << "\n";
-		unsigned size = numbers.size();
-		for (unsigned i = 0; i < size; i++) {
-			n = numbers.back();
-			numbers.pop_back();
-			if (n == 0) std::cout << "A";
-			else if (n == 1) std::cout << "B";
-			else if (n == 2) std::cout << "C";
-			else if (n == 3) std::cout << "D";
-		}
+	int size = output.size();
+	for(int i = 0; i < size; i++){
+		std::cout << output.back();
+		output.pop_back();
 	}
 }
 
-bool Base4::isMultipleOf4(unsigned number){
-	unsigned base = 4, baseTotal = 1;
-	for(int i = 0; i < 16; i++){
-		baseTotal *= base;
-		if(number == baseTotal) return true;
-	}
-	return false;
+char getLetter(unsigned n){
+	if (n == 0) return 'A';
+	else if (n == 1) return 'B';
+	else if (n == 2) return 'C';
+	else if (n == 3) return 'D';
+	else return ' ';
 }
-
 /*
 0 = A
 1 = B
@@ -96,8 +64,11 @@ bool Base4::isMultipleOf4(unsigned number){
 15 = DD
 16 = BAA
 ...
+31 = BDD
+...
+60 = DDA
+61 = DDB
+62 = DDC
 63 = DDD
+64 = BAAA
 */
-
-//z = d*q + r
-//z = dividend, d = divisor, q = quotient, r = remainder
