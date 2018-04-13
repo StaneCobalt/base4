@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stack>
 
+const unsigned int base = 4;
 void toBase4(unsigned z, unsigned d);
 char getLetter(unsigned n);
 
@@ -8,7 +9,7 @@ int main(int argc, char** argv){
 	unsigned input;
 	std::cout << "Enter an integer(+): ";
 	std::cin >> input;
-	toBase4(input, 4);
+	toBase4(input, base);
 	std::cout << std::endl;
 	return 0;
 }
@@ -30,10 +31,9 @@ void toBase4(unsigned z, unsigned d){
 }
 
 char getLetter(unsigned n){
-	if (n == 0) return 'A';
-	else if (n == 1) return 'B';
-	else if (n == 2) return 'C';
-	else if (n == 3) return 'D';
+	for(unsigned i = 0; i < base; i++){
+		if(n == i) return 'A'+i;
+	}
 	return '\0';
 }
 /*	Formula used: z = d*q + r
