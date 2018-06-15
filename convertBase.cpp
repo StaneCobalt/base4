@@ -29,20 +29,16 @@ void ConvertBase::setBase(unsigned base) {
 */
 void ConvertBase::toNewBase(unsigned input) {
 	unsigned quotient = input/base;
-	unsigned remainder = input%base;
 	std::stack<char> output;
 	
-	output.push(getLetter(remainder));
+	output.push(getLetter(input%base));
 	
 	while(quotient > 0){
-			remainder = quotient%base;
-			output.push(getLetter(remainder));
+			output.push(getLetter(quotient%base));
 			quotient /= base;
 	}
 	
-	unsigned size = output.size();
-	
-	for(unsigned i = 0; i < size; i++){
+	while(!output.empty()){
 		std::cout << output.top();
 		output.pop();
 	}
