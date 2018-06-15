@@ -48,13 +48,9 @@ void ConvertBase::toNewBase(unsigned input) {
  * Grabs a char starting with A for converting the number.
  * Example: If base 2 is chosen, the results will either be A for 0, or B for 1.
  * 	    If base 4 is chosen, the results could be A for 0, B for 1, C for 2, or D for 3
- * If something goes wrong, it returns a null char instead.
 */
 char ConvertBase::getLetter(unsigned n) {
-	for(unsigned i = 0; i < base; i++){
-		if(n == i) return 'A'+i;
-	}
-	return '\0';
+	return 'A'+n;
 }
 
 /*	Formula used: z = d*q + r
