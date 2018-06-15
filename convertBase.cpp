@@ -1,65 +1,54 @@
+#include "convertBase.h"
 #include <iostream>
 #include <stack>
 
-const unsigned int base = 4;
-void toBase4(unsigned z, unsigned d);
-char getLetter(unsigned n);
-
-int main(int argc, char** argv){
-	unsigned input;
-	std::cout << "Enter an integer(+): ";
-	std::cin >> input;
-	toBase4(input, base);
-	std::cout << std::endl;
-	return 0;
+ConvertBase::ConvertBase() { 
+	this->base = 4;
 }
 
-void toBase4(unsigned z, unsigned d){
-	unsigned q = z/d, r = z%d;
+ConvertBase::ConvertBase(unsigned base) { 
+	this->base = base; 
+}
+
+unsigned ConvertBase::getBase() const { 
+	return base;
+}
+
+void ConvertBase::setBase(unsigned base) {
+	this->base = base;
+}
+
+void ConvertBase::toNewBase(unsigned input) {
+	unsigned quotient = input/base;
+	unsigned remainder = input%base;
 	std::stack<char> output;
-	output.push(getLetter(r));
-	while(q > 0){
-			r = q%d;
-			output.push(getLetter(r));
-			q /= d;
+	
+	output.push(getLetter(remainder));
+	
+	while(quotient > 0){
+			remainder = quotient%base;
+			output.push(getLetter(remainder));
+			quotient /= base;
 	}
-	int size = output.size();
-	for(int i = 0; i < size; i++){
+	
+	unsigned size = output.size();
+	
+	for(unsigned i = 0; i < size; i++){
 		std::cout << output.top();
 		output.pop();
 	}
 }
 
-char getLetter(unsigned n){
+char ConvertBase::getLetter(unsigned n) {
 	for(unsigned i = 0; i < base; i++){
 		if(n == i) return 'A'+i;
 	}
 	return '\0';
 }
+
 /*	Formula used: z = d*q + r
-	z = dividend, d = divisor, q = quotient, r = remainder
+	z = dividend (the input), d = divisor (the base), q = quotient, r = remainder
 	example: 16/4 --> z = 16, d = 4, q = 4, r = 0 --> returns A
 	4/4 --> z = 4, d = 4, q = 1, r = 0 --> returns A
 	1/4 --> z = 1, d = 4, q = 0, r = 1 --> returns B
-*/
-
-/*	Pattern:
-	4^0 4^1 4^2 4^3 ... 4^n
-	0 = A
-	1 = B
-	2 = C
-	3 = D
-	4 = BA
-	5 = BB
-	...
-	15 = DD
-	16 = BAA
-	...
-	31 = BDD
-	...
-	60 = DDA
-	61 = DDB
-	62 = DDC
-	63 = DDD
-	64 = BAAA
 */
