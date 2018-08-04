@@ -21,5 +21,7 @@ If you're installing for the first time on Windows, you'll want to run the set_d
 
 In order to build just follow these steps:
 1. Open up MinGW and navigate to the Source Folder
-2. Use the following command: `g++ main.cpp convertBase.cpp -std=c++11 -o convertBase.exe`
-3. After the executable is created just type `convertBase.exe` to run the file
+2. Use the following command: `make all`
+3. After the executable is created just type `base.exe` to run the file
+4. First input the number you wish to convert, then the base you wish to use. You can also enter these in when you call the exe file!
+Example: `base.exe 16 4`
